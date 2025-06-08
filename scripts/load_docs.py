@@ -2,6 +2,7 @@ from llama_index.core import VectorStoreIndex, SimpleDirectoryReader, StorageCon
 from llama_index.vector_stores.faiss import FaissVectorStore
 from llama_index.embeddings.huggingface import HuggingFaceEmbedding
 import faiss
+import os
 
 documents = SimpleDirectoryReader("articles").load_data()
 
@@ -10,6 +11,7 @@ embed_model = HuggingFaceEmbedding(
 
 d = 384
 faiss_index = faiss.IndexFlatL2(d)
+faiss.write_index(faiss_index, "index/faiss.index")
 vector_store = FaissVectorStore(faiss_index=faiss_index)
 storage_context = StorageContext.from_defaults(vector_store=vector_store)
 
